@@ -21,6 +21,12 @@ public class CabinesDEssayage {
 		if(nombreCabines<=0)
 			throw new IllegalArgumentException();
 		// TODO
+		tableOccupations = new boolean[nombreCabines];
+		pileNumerosCabinesLibres = new PileImpl<>();
+		for (int i = 1; i <= nombreCabines; i++) {
+			pileNumerosCabinesLibres.push(i);
+			
+		}
 	}
 	
 	/**
@@ -29,7 +35,7 @@ public class CabinesDEssayage {
 	 */
 	public int nombreCabinesLibres(){
 		// TODO
-		return 0;
+		return pileNumerosCabinesLibres.taille();
 	}
 	
 	/**
@@ -38,7 +44,11 @@ public class CabinesDEssayage {
 	 */
 	public int attribuerCabineLibre(){
 		// TODO
-		return 0;
+		if (pileNumerosCabinesLibres.estVide())
+			return -1;
+		int cabineLibre = pileNumerosCabinesLibres.pop();
+		tableOccupations[cabineLibre -1] = true; // Les indices des tableaux commencent à 0, donc on soustrait 1
+		return cabineLibre;
 	}
 	
 	/**
@@ -49,5 +59,9 @@ public class CabinesDEssayage {
 	 */
 	public void libererCabine(int numeroCabine) throws IllegalArgumentException, IllegalStateException{
 		// TODO
+		if (numeroCabine <= 0 || numeroCabine > tableOccupations.length) throw new IllegalArgumentException();
+		if (!tableOccupations[numeroCabine -1])throw new IllegalStateException();
+		tableOccupations[numeroCabine -1] = false;
+		pileNumerosCabinesLibres.push(numeroCabine);
 	}
 }
