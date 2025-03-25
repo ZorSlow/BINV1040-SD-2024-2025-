@@ -9,6 +9,13 @@ public class Consigne{
 	 */
 	public Consigne(int nombreCasiers){
 		// TODO
+		if (nombreCasiers <= 0 ) throw new IllegalArgumentException("ke nombre de casiers est negatif ou nul");
+		casiersLibres = new PileImpl<Casier>();
+		tousLesCasiers = new Casier[nombreCasiers];
+		for (int i = 0; i < tousLesCasiers.length; i++) {
+			tousLesCasiers[i] = new Casier(i);
+			casiersLibres.push(tousLesCasiers[i]);
+		}
 	}
 
 	/**
