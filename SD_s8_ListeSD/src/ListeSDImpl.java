@@ -99,7 +99,27 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean insererEnQueue (E element) {
 		//TODO
-		return false;
+		if (mapElementNoeud.containsKey(element)){
+			return false;
+		}
+		Noeud nouveauNoeud = new Noeud(element);
+		// Cas où la liste est vide (seulement les sentinelles)
+		if (queue.precedent == tete){
+			nouveauNoeud.suivant = queue;
+			nouveauNoeud.precedent = tete;
+			queue.precedent = nouveauNoeud;
+			tete.suivant = nouveauNoeud;
+		}else{
+			// Cas général : insertion en tête
+			Noeud anceinneQueue = queue.precedent;
+			nouveauNoeud.suivant = queue;
+			nouveauNoeud.precedent = anceinneQueue;
+			anceinneQueue.suivant = nouveauNoeud;
+			queue.precedent = nouveauNoeud;
+		}
+		mapElementNoeud.put(element,nouveauNoeud);
+
+		return true;
 
 	}
 
