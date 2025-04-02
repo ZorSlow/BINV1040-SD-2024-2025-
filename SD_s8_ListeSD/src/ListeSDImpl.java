@@ -70,17 +70,32 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean insererEnTete (E element){
 		//TODO
-		//verif si la map contient l'element
-		if (mapElementNoeud.containsKey(element))
-			return false;
-		//create nouveau noeud
-		Noeud nouveauNoeud = new Noeud(element);
-		// neoeud avant et aprés
-		Noeud noeudAvant = tete;
-		Noeud noeudApres = tete.suivant;
-		return false;
 
-	}
+		// Verifier si l'élement est déjà présent
+		if (mapElementNoeud.containsKey(element)) {
+			return false;
+		}
+		Noeud nouveauNoeud = new Noeud(element);
+		// Cas où la liste est vide (seulement les sentinelles )
+		if (tete.suivant == queue) {
+			nouveauNoeud.precedent = tete;
+			nouveauNoeud.suivant = queue;
+			tete.suivant = nouveauNoeud;
+			queue.precedent = nouveauNoeud;
+		}else {
+			// Cas général : insertion en tête
+			Noeud ancienneTete = tete.suivant;
+			nouveauNoeud.precedent = tete;
+			nouveauNoeud.suivant = ancienneTete;
+			ancienneTete.precedent = nouveauNoeud;
+			tete.suivant = nouveauNoeud;
+
+		}
+		mapElementNoeud.put(element,nouveauNoeud);
+
+		return true;
+
+}
 
 	public boolean insererEnQueue (E element) {
 		//TODO
