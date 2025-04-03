@@ -99,39 +99,85 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean insererEnQueue (E element) {
 		//TODO
-		if (mapElementNoeud.containsKey(element)){
+		if (mapElementNoeud.containsKey(element)) {
 			return false;
 		}
+
 		Noeud nouveauNoeud = new Noeud(element);
+
 		// Cas où la liste est vide (seulement les sentinelles)
-		if (queue.precedent == tete){
+		if (queue.precedent == tete) {
 			nouveauNoeud.suivant = queue;
 			nouveauNoeud.precedent = tete;
-			queue.precedent = nouveauNoeud;
 			tete.suivant = nouveauNoeud;
-		}else{
-			// Cas général : insertion en tête
-			Noeud anceinneQueue = queue.precedent;
-			nouveauNoeud.suivant = queue;
-			nouveauNoeud.precedent = anceinneQueue;
-			anceinneQueue.suivant = nouveauNoeud;
 			queue.precedent = nouveauNoeud;
+		} else {
+			// Cas général : insertion en queue
+			Noeud ancienneQueue = queue.precedent;
+			nouveauNoeud.suivant = queue;
+			nouveauNoeud.precedent = ancienneQueue;
+			ancienneQueue.suivant = nouveauNoeud; // Lien manquant
+			queue.precedent = nouveauNoeud;       // Mise à jour de la sentinelle
 		}
-		mapElementNoeud.put(element,nouveauNoeud);
+
+		mapElementNoeud.put(element, nouveauNoeud);
+
+		return true;
+	}
+
+	public boolean insererApres (E element, E elementAInserer) {
+		//TODO
+
+		// 1. Veréfier les élements en entrée
+		if (!mapElementNoeud.containsKey(element) || mapElementNoeud.containsKey(elementAInserer)) {
+			return false; // Élément parent non trouvé OU doublon
+		}
+		// 2. Créer le nouveau noeud
+		Noeud nouveauNoeud = new Noeud(elementAInserer);
+
+		// 3. Recupérer les références
+		Noeud noeudAvant = mapElementNoeud.get(element);
+		Noeud noeudApres = noeudAvant.suivant;
+
+		// 4. Mettre à jour les liens
+		nouveauNoeud.precedent = noeudAvant;
+		nouveauNoeud.suivant = noeudApres;
+
+		noeudAvant.suivant = nouveauNoeud;
+		noeudApres.precedent = nouveauNoeud;
+		// 5. Ajouter à la Map
+		mapElementNoeud.put(elementAInserer, nouveauNoeud);
 
 		return true;
 
 	}
 
-	public boolean insererApres (E element, E elementAInserer) {
-		//TODO
-		return false;
-
-	}
-
 	public boolean insererAvant (E element, E elementAInserer) {
 		//TODO
-		return false;
+
+		// 1. Vérifications renforcées (sentinelles incluses)
+		if (!mapElementNoeud.containsKey(element) || mapElementNoeud.containsKey(elementAInserer)
+				|| element == tete || element == queue) {
+			return false;
+		}
+
+		// 2. Créer le nouveau noeud
+		Noeud nouveauNoeud = new Noeud(elementAInserer);
+
+		// 3. Recupérer les références
+		Noeud noeudCible = mapElementNoeud.get(element);
+		Noeud noeudAvant = noeudCible.precedent;
+
+		// 4. Mettre à jour les liens
+		nouveauNoeud.precedent = noeudAvant;
+		nouveauNoeud.suivant = noeudCible;
+
+		noeudAvant.suivant = nouveauNoeud;
+		noeudCible.precedent = nouveauNoeud;
+		// 5. Ajouter à la Map
+		mapElementNoeud.put(elementAInserer, nouveauNoeud);
+
+		return true;
 
 	}
 
