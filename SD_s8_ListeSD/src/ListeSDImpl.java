@@ -184,7 +184,30 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 	public boolean supprimer (E element) {
 		//TODO
-		return false;
+
+		// 1. Vérifier si l'élément existe dans la Map
+		if(!mapElementNoeud.containsKey(element)) {
+			return false;
+		}
+
+		// 2. Récupérer le nœud à supprimer
+		Noeud noeudASupp = mapElementNoeud.get(element);
+
+		// 3. Vérifier que ce n'est pas une sentinelle (sécurité renforcée)
+		if (noeudASupp == tete || noeudASupp == queue) {
+			return false;
+		}
+		// 4. Mettre à jour les liens des nœuds adjacents
+		Noeud noeudAvant = noeudASupp.precedent;
+		Noeud noeudApres = noeudASupp.suivant;
+
+		noeudAvant.suivant = noeudApres;
+		noeudApres.precedent = noeudAvant;
+
+		// 5. Retirer l'élément de la Map
+		mapElementNoeud.remove(element);
+
+		return true;
 
 	}
 
@@ -192,17 +215,37 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 	public boolean permuter (E element1, E element2) {
 
 		//TODO
-		return false;
 
 		// REMARQUE : CE SONT LES VALEURS QUI SONT PERMUTEES, PAS LES NOEUDS!!!
 		// Il est donc inutile de revoir le chainage
 		// N'oubliez pas de modifier les noeuds associes dans le map
 
+		// verifcation les elements d'entrées
+		if(!mapElementNoeud.containsKey(element1) || !mapElementNoeud.containsKey(element2)){
+			return false;
+		}
+		// Recupérer les noeuds associés aux élements
+		Noeud noeud1 = mapElementNoeud.get(element1);
+		Noeud noeud2 = mapElementNoeud.get(element2);
+
+		// Échanger les valeurs stockées dans les nœuds (pas les nœuds eux-mêmes)
+		E temp = noeud1.element;
+		noeud1.element = noeud2.element;
+		noeud2.element = temp;
+
+		// Mettre à jour la Map pour refléter les nouvelles clés
+		mapElementNoeud.remove(element1); // Retirer l'ancienne clé elem1
+		mapElementNoeud.remove(element2);
+		mapElementNoeud.put(noeud1.element,noeud1);// Nouvelle clé : valeur de noeud1
+		mapElementNoeud.put(noeud2.element,noeud2);
+
+		return true;
+
 	}
 
 	public Iterator<E> iterator() {
 		//TODO
-		return null;
+		return new IterateurImpl();
 		// il faut renvoyer un objet de type Iterator :
 		//return new IterateurImpl();
 		// completez la classe interne IterateurImpl !
@@ -246,26 +289,32 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 	
 
 	// Classe interne IterateurImpl
-	private class IterateurImpl implements Iterator{
+	private class IterateurImpl implements Iterator<E>{
 
 		private Noeud noeudCourant;
 
 		private IterateurImpl() {
 			//TODO
+			noeudCourant = tete.suivant;// Démarre après la sentinelle de tête
 
 		}
 
 		public boolean hasNext() {
 			//TODO
-			return false;
-
+			return noeudCourant != queue; // S'arrête avant la sentinelle de queue
 		}
 
 		// renvoie l element qui se trouve dans le noeud courant
 		// le noeud courant passe au noeud suivant
 		public E next() {
 			//TODO
-			return null;
+			if (!hasNext()) {
+				throw new NoSuchElementException("Plus d'éléments dans l'itérateur");
+			}
+
+			E element = noeudCourant.element;
+			noeudCourant = noeudCourant.suivant;
+			return element;
 
 		}
 
