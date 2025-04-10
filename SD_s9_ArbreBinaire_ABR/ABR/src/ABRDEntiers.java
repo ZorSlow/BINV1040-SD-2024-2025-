@@ -34,14 +34,26 @@ public class ABRDEntiers {
 	 */
 	public void insere(int entier) {
 		//TODO
-
+		if(racine == null){
+			racine = new NoeudEntier(entier);
+		}else {
+			insere(racine, entier);
+		}
 	}
-	private void insere(NoeudEntier noeudEntier,int entier){
-		if (noeudEntier == null)
-			return;
-		if (noeudEntier.entier < entier)
-			insere(noeudEntier.gauche,entier);
-		insere(noeudEntier.droit, entier);
+	private void insere(NoeudEntier noeud,int entier){
+		if (entier < noeud.entier) {
+			if (noeud.gauche == null){
+				noeud.gauche = new NoeudEntier(entier);
+			}else {
+				insere(noeud.gauche, entier);
+			}
+		}else {
+			if (noeud.droit == null) {
+				noeud.droit = new NoeudEntier(entier);
+			}else{
+				insere(noeud.droit, entier);
+			}
+		}
 	}
 
 
@@ -52,8 +64,16 @@ public class ABRDEntiers {
 	 */
 	public boolean contient(int entier) {
 		//TODO
-		return false;
-
+		return contient(racine,entier);
+	}
+	private boolean contient(NoeudEntier noeud, int entier){
+		if (noeud == null){
+			return false;
+		}
+		if (noeud.entier == entier){
+			return true;
+		}
+		return contient(noeud.gauche, entier) || contient(noeud.droit,entier);
 	}
 
 	/**
