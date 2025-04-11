@@ -86,8 +86,11 @@ public class ABRDEntiers {
 		// Cette methode peut etre ecrite de facon iterative
 		// Ou se trouve le plus petit entier dans l'arbre ?
 		// Reflechissez !
-		return 0;
-
+		if (racine == null) throw new ArbreVideException();
+		NoeudEntier courant = racine;
+		while (courant.gauche != null)// Tant qu'on peut aller à gauche
+			courant = courant.gauche;
+		return courant.entier; // Le nœud le plus à gauche est le min
 	}
 
 	/**
@@ -99,6 +102,20 @@ public class ABRDEntiers {
 		// La methode supprimeMin() est plus simple que la methode supprime()
 		// Le noeud qui contient le plus petit entier n'a pas de fils gauche
 		// Reflechissez !
+		if (racine == null){
+			throw new ArbreVideException();
+		}
+		racine = supprimeMin(racine);
+	}
+	private NoeudEntier supprimeMin(NoeudEntier noeud){
+		// Cas où le nœud courant est le minimum (pas de fils gauche)
+
+		if (noeud.gauche == null){
+			return noeud.droit;
+		}
+		// Sinon, supprime le minimum dans le sous-arbre gauche
+		noeud.gauche = supprimeMin(noeud.gauche);
+		return noeud;
 
 	}
 	/**
