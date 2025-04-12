@@ -125,7 +125,17 @@ public class ABRDEntiers {
 	public int hauteur() {
 		//TODO
 		// Ex C
-		return 0;
+
+	return 	hauteur(racine);
+	}
+	private int hauteur(NoeudEntier noeud){
+		if(noeud == null){
+			return -1;
+		}
+		int hauteurG = hauteur(noeud.gauche);
+		int hauteurD = hauteur(noeud.droit);
+		return 1 + Math.max(hauteurG,hauteurD);
+
 	}
 
 
