@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/1_OrdreDeComplexite/1_OrdreDeComplexite.iml" filepath="$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/1_OrdreDeComplexite/1_OrdreDeComplexite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/2_FileViaTable/2_FileViaTable.iml" filepath="$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/2_FileViaTable/2_FileViaTable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s9_ArbreBinaire_ABR/ABR/ABR.iml" filepath="$PROJECT_DIR$/SD_s9_ArbreBinaire_ABR/ABR/ABR.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/BINV1040-SD-2024-2025.iml" filepath="$PROJECT_DIR$/.idea/BINV1040-SD-2024-2025.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s10_ParcoursArbres_Dico/SD_s10_ParcoursArbres_Dico.iml" filepath="$PROJECT_DIR$/SD_s10_ParcoursArbres_Dico/SD_s10_ParcoursArbres_Dico.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s11_fileDePriorite/SD_s11_fileDePriorite.iml" filepath="$PROJECT_DIR$/SD_s11_fileDePriorite/SD_s11_fileDePriorite.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s1_PileEtVecteur/SD_s1_PileEtVecteur.iml" filepath="$PROJECT_DIR$/SD_s1_PileEtVecteur/SD_s1_PileEtVecteur.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/SD_s2_OrdreComplexite_FileViaTable.iml" filepath="$PROJECT_DIR$/SD_s2_OrdreComplexite_FileViaTable/SD_s2_OrdreComplexite_FileViaTable.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s7_Map/SD_s7_Map.iml" filepath="$PROJECT_DIR$/SD_s7_Map/SD_s7_Map.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s8_ListeSD/SD_s8_ListeSD.iml" filepath="$PROJECT_DIR$/SD_s8_ListeSD/SD_s8_ListeSD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SD_s9_ArbreBinaire_ABR/arbreBinaire/arbreBinaire.iml" filepath="$PROJECT_DIR$/SD_s9_ArbreBinaire_ABR/arbreBinaire/arbreBinaire.iml" />
+    </modules>
+  </component>
+</project>

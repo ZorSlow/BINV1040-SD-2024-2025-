@@ -9,14 +9,16 @@ public class Consigne{
 	 */
 	public Consigne(int nombreCasiers){
 		// TODO
-		if (nombreCasiers <= 0 ) throw new IllegalArgumentException("le nombre de casiers est negatif ou nul");
+		if(nombreCasiers<=0)
+			throw new IllegalArgumentException();
 		casiersLibres = new PileImpl<Casier>();
 		tousLesCasiers = new Casier[nombreCasiers];
 		for (int i = 0; i < nombreCasiers; i++) {
 			Casier casier = new Casier(i);
 			casiersLibres.push(casier);
-			tousLesCasiers[i] = casier;
+			tousLesCasiers[i]=casier;
 		}
+		
 	}
 
 	/**
@@ -25,7 +27,8 @@ public class Consigne{
 	 */
 	public boolean resteUnCasierLibre() {
 		// TODO
-		return false;
+		//return false;
+		return casiersLibres.taille() != 0;
 	}
 
 	
@@ -37,7 +40,14 @@ public class Consigne{
 	 */
 	public int attribuerCasierLibre(String motDePasse) {
 		// TODO		
-		return 0;
+		//return 0;
+		if(motDePasse==null||motDePasse.equals(""))
+			throw new IllegalArgumentException();
+		if(casiersLibres.estVide())
+			return -1;
+		Casier casier = casiersLibres.pop();
+		casier.setMotDePasse(motDePasse);
+		return casier.getNumero();
 	}
 
 	
@@ -51,8 +61,17 @@ public class Consigne{
 	 */
 	public boolean libererCasier(int numeroCasier, String motDePasse) {
 		// TODO
-		return false;
-
+		//return false;
+		if(motDePasse==null||motDePasse.equals(""))
+			throw new IllegalArgumentException();
+		if(numeroCasier<0 || numeroCasier >= tousLesCasiers.length)
+			throw new IllegalArgumentException();
+		Casier casier = tousLesCasiers[numeroCasier];
+		if(!casier.getMotDePasse().equals(motDePasse))
+			return false;
+		casier.setMotDePasse("");
+		casiersLibres.push(casier);
+		return true;
 	}
 
 }

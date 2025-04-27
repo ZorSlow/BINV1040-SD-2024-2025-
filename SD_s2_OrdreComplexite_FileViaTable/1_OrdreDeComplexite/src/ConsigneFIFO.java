@@ -1,21 +1,26 @@
-public class Consigne{
-	private Pile<Casier> casiersLibres;
-	private Casier[] tousLesCasiers;
+import java.util.ArrayList;
+import java.util.ArrayDeque;
+
+
+public class ConsigneFIFO {
 	
+	private ArrayDeque<Casier> casiersLibres;
+	private Casier[] tousLesCasiers;
+
 	/**
 	 * construit une consigne de gare avec tous les casiers libres au depart
 	 * @param nombreCasiers le nombre de casier de la consigne
 	 * @throws IllegalArgumentException si le nombre de casiers est negatif ou nul
 	 */
-	public Consigne(int nombreCasiers){
+	public ConsigneFIFO(int nombreCasiers){
 		// TODO
-		if (nombreCasiers <= 0 ) throw new IllegalArgumentException("le nombre de casiers est negatif ou nul");
-		casiersLibres = new PileImpl<Casier>();
+		if (nombreCasiers <=0 ) throw new IllegalArgumentException();
+		casiersLibres = new ArrayDeque<Casier>();
 		tousLesCasiers = new Casier[nombreCasiers];
 		for (int i = 0; i < nombreCasiers; i++) {
 			Casier casier = new Casier(i);
-			casiersLibres.push(casier);
-			tousLesCasiers[i] = casier;
+			casiersLibres.add(casier);
+			tousLesCasiers[i]= casier;
 		}
 	}
 
@@ -25,22 +30,28 @@ public class Consigne{
 	 */
 	public boolean resteUnCasierLibre() {
 		// TODO
-		return false;
+		return !casiersLibres.isEmpty();
 	}
 
 	
 	/**
-	 * attribue un casier libre
+	 * attribue un casier libre selon le principe FIFO
 	 * @param motDePasse le mot de passe qui permettra de liberer le casier
 	 * @return le numero du casier attribue ou -1 s'il n'y en a plus de libre
 	 * @throws IllegalArgumentException si le mot de passe est vide ou null
 	 */
 	public int attribuerCasierLibre(String motDePasse) {
-		// TODO		
-		return 0;
+		// TODO
+		if (motDePasse == null || motDePasse.equals(""))throw new IllegalArgumentException();
+		if (casiersLibres.isEmpty())
+			return -1;
+		Casier casier = casiersLibres.pollFirst();
+		casier.setMotDePasse(motDePasse);
+		return casier.getNumero();
+
 	}
 
-	
+
 	/**
 	 * libere un casier
 	 * @param numeroCasier le numero de casier qui doit etre libere
@@ -51,8 +62,14 @@ public class Consigne{
 	 */
 	public boolean libererCasier(int numeroCasier, String motDePasse) {
 		// TODO
-		return false;
+		if (numeroCasier <0 || numeroCasier >= tousLesCasiers.length)throw new IllegalArgumentException();
+		if (motDePasse == null || motDePasse.equals(""))throw new IllegalArgumentException();
+		Casier casier = tousLesCasiers[numeroCasier];
+		if (!casier.getMotDePasse().equals(motDePasse))
+			return false;
+		casier.setMotDePasse("");
+		casiersLibres.addLast(casier);
+		return true;
 
 	}
-
 }

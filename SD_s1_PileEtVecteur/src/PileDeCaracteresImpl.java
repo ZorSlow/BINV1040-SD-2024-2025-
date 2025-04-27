@@ -34,8 +34,8 @@ public class PileDeCaracteresImpl implements PileDeCaracteres{
 
 
 	public char sommet()throws PileVideException{
-		if (estVide())throw new PileVideException();
-		return table[taille() -1];
+		if (estVide())throw new PileVideException("Pile vide ");
+		return table[taille()-1];
 		// TODO
 		// PENSEZ A CONSULTER LA JAVADOC (cfr Interface PileDeCaracteres)
 
@@ -43,7 +43,7 @@ public class PileDeCaracteresImpl implements PileDeCaracteres{
 
 
 	public char pop() throws PileVideException{
-		if (estVide())throw new PileVideException();
+		if (estVide())throw new PileVideException("Pile est vide");
 		nombreCaracteres--;
 		return table[taille()];
 		// TODO
@@ -53,18 +53,18 @@ public class PileDeCaracteresImpl implements PileDeCaracteres{
 
 
 	public void push(char c){
-	 	 if (taille() == table.length) {
-			 char[] nouvelTable = new char[table.length * 2];
-			 for (int i = 0; i < table.length; i++) {
-				 nouvelTable[i] = table[i];
-			 }
-			 table = nouvelTable;
-		 }
-		table[taille()] = c ;
-		nombreCaracteres++;
 		// TODO
 		// PENSEZ A CONSULTER LA JAVADOC (cfr Interface PileDeCaracteres)
 
+		if (nombreCaracteres == table.length) {
+			char[] tableT = new char[nombreCaracteres * 2];
+			for (int i = 0; i < table.length; i++) {
+				tableT[i] = table[i];
+			}
+			table = tableT;
+		}
+		table[nombreCaracteres] = c;
+		nombreCaracteres++;
 	}
 
 	//A NE PAS MODIFIER
