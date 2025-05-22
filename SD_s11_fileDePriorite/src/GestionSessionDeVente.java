@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class GestionSessionDeVente {
 
-    private static Scanner scanner = new Scanner(System.in);
-    //private static MonScanner scanner = new MonScanner("ventes.txt");
+    //private static Scanner scanner = new Scanner(System.in);
+    private static MonScanner scanner = new MonScanner("ventes.txt");
     private static SessionDeVente session;
 
     public static void main(String[] args) {
