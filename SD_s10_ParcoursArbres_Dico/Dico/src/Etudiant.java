@@ -1,5 +1,5 @@
 
-public class Etudiant {
+public class Etudiant implements Comparable<Etudiant> {
 	
 	private int numeroMatricule;
 	private String nom;
@@ -27,8 +27,9 @@ public class Etudiant {
 	public String getPrenom() {
 		return prenom;
 	}
-
-
+	public int compareTo(Etudiant autre){
+		return Integer.compare(this.getNumeroMatricule(),autre.getNumeroMatricule());
+	}
 	
 
 
