@@ -1,3 +1,6 @@
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 
 /**
  *
@@ -9,6 +12,12 @@
 public class Entrepot {
 
 	//TODO
+	private Hangar[] tableHangars;
+	private HashMap<Integer, Societe> mapSocietes;
+	private int nombreHangars;
+	private int nombreHangarsLibres;
+	private HashSet<String> ensembleToutesLesPlaques;
+	private int nombreHangarsSocietes;
 
 
 	/**
@@ -20,6 +29,15 @@ public class Entrepot {
 		if(nombreHangars<=0)
 			throw new IllegalArgumentException();
 		// TODO
+		this.nombreHangars = nombreHangars;
+		this.nombreHangarsLibres = nombreHangars;
+
+		mapSocietes = new HashMap<>();
+		tableHangars = new  Hangar[nombreHangars];
+		ensembleToutesLesPlaques = new HashSet<>();
+		for (int i = 0; i < nombreHangars; i++) {
+			tableHangars[i] = new Hangar(i);
+		}
 
 	}
 
@@ -29,7 +47,7 @@ public class Entrepot {
 	 */
 	public int nombreHangarsLibres(){
 		//TODO
-		return 0;
+		return nombreHangarsLibres;
 
 	}
 
@@ -40,7 +58,7 @@ public class Entrepot {
 	 */
 	public int nombreSocietesPresentes(){
 		//TODO
-		return 0;
+		return mapSocietes.size();
 
 	}
 
@@ -51,8 +69,7 @@ public class Entrepot {
 	 */
 	public Societe getSociete(int numeroSociete){
 		//TODO
-		return null;
-
+		return  mapSocietes.get(numeroSociete);
 	}
 
 	/**
@@ -66,13 +83,77 @@ public class Entrepot {
 	 */
 	public int attribuerHangar(int numeroSociete, String nomSociete) {
 		// TODO
-		return 0;
-		// Pour une meilleure repartition des hangars occupes dans l'entrepot, 
+		if (nombreHangarsLibres == 0) return -1;
+
+		Societe societe = mapSocietes.get(numeroSociete);
+		if (societe == null) {
+			societe = new Societe(numeroSociete, nomSociete);
+			mapSocietes.put(numeroSociete, societe);
+		}
+
+		int numHangar = numeroSociete % tableHangars.length;
+
+		for (int i = 0; i < tableHangars.length; i++) {
+			int index = (numHangar + i) % tableHangars.length;
+			if (tableHangars[index].getSociete() == null) {
+				tableHangars[index].setSociete(societe);
+				societe.ajouterHangar(index);
+				nombreHangarsLibres--;
+				return index;
+			}
+		}
+
+		// Aucun hangar libre trouvé (devrait pas arriver si nombreHangarsLibres > 0)
+		return -1;
+	}
+		// Pour une meilleure repartition des hangars occupes dans l'entrepot,
 		// veuillez suivre les indications donnees dans l'enonce!
 
+
+		public boolean libererHangar(int numeroHangar) {
+			if (numeroHangar < 0 || numeroHangar >= tableHangars.length) {
+				System.out.println("numero de hangar incorrect");
+				return false;
+			}
+
+			if (tableHangars[numeroHangar].getSociete() == null)
+				return false;
+
+			int numeroSociete = tableHangars[numeroHangar].getSociete().getNumeroSociete();
+			mapSocietes.get(numeroSociete).retirerHangar(numeroHangar);
+			tableHangars[numeroHangar].setSociete(null);
+			nombreHangarsLibres++; // N'oublie pas de l'incrémenter ici !
+			return true;
+		}
+	/**
+	 * ajoute une plaque pour une société
+	 * @param numeroSociete la société à laquelle il faut ajouter la plaque
+	 * @param plaque la plaque qu'il faut ajouter à la société
+	 * @return true si la plaque a été ajouter, false sinon
+	 */
+	public boolean ajouterPlaque(int numeroSociete, String plaque){
+		Societe s = mapSocietes.get(numeroSociete);
+		if (s != null && plaque != null && !plaque.isEmpty()) {
+			// Vérifie si la plaque existe déjà
+			if (!ensembleToutesLesPlaques.contains(plaque)) {
+				ensembleToutesLesPlaques.add(plaque);
+				s.ajouterVoiture(plaque);
+				return true;
+			}
+		}
+		return false;
+	}
+
+
+	/**
+	 * vérifie si une plaque est autorisée
+	 * @param numPlaque la plaque a vérifié
+	 * @return true si la plaque est autorisée
+	 */
+	public boolean estAutorisee(String numPlaque){
+		return ensembleToutesLesPlaques.contains(numPlaque);
+	}
 	}
 	
 
 
-
-}

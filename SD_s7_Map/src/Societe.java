@@ -5,12 +5,14 @@ public class Societe {
 	private int numeroSociete;
 	private String nom;
 	private HashSet<Integer> lesHangars;
-	
+	private HashSet<String> ensembleVoitureAutorisee;
+
+
 	/**
 	 * construit une societe sans hangar
 	 * @param numeroSociete son numero
 	 * @param nom son nom
-	 * @throws IllegalArgumentException si le numero de la societe est negatif ou nul 
+	 * @throws IllegalArgumentException si le numero de la societe est negatif ou nul
 	 *                                  si le nom est null ou ""
 	 */
 	public Societe(int numeroSociete, String nom) {
@@ -19,6 +21,9 @@ public class Societe {
 		if(nom == null || nom.equals(""))
 			throw new IllegalArgumentException();
 		//TODO
+		lesHangars = new HashSet<>();
+		this.nom = nom;
+		this.numeroSociete = numeroSociete;
 
 	}
 
@@ -30,6 +35,23 @@ public class Societe {
 	 */
 	public boolean ajouterHangar(int numeroHangar){
 		// TODO
+		if (!lesHangars.contains(numeroHangar)){
+			lesHangars.add(numeroHangar);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * supprime un hangar si celui-ci n'y est pas encore
+	 * @param numeroSociete le numero du hangar supprimer
+	 * @return
+	 */
+	public boolean retirerHangar(int numeroSociete){
+		if (!lesHangars.contains(numeroSociete)){
+			lesHangars.remove(numeroSociete);
+			return true;
+		}
 		return false;
 	}
 
@@ -42,15 +64,31 @@ public class Societe {
 		return lesHangars.toString();
 		// A NE PAS MODIFIER --> VA SERVIR POUR LES TESTS
 	}
+	/**
+	 * ajoute une plaque à un ensemble
+	 * @param plaque à ajouter
+	 * @return true si la plaque a été ajouter
+	 */
+	public boolean ajouterVoiture(String plaque){
+		return ensembleVoitureAutorisee.add(plaque);
+	}
 
+	/**
+	 *
+	 * @param plaque
+	 * @return
+	 */
+	public boolean retirerVoiture(String plaque){
+		return ensembleVoitureAutorisee.remove(plaque);
+	}
 	public int getNumeroSociete() {
 		return numeroSociete;
 	}
-	
+
 	public String getNom() {
 		return nom;
 	}
-	
+
 
 	@Override
 	public String toString() {
@@ -63,7 +101,7 @@ public class Societe {
 	public int hashCode() {
 		return numeroSociete;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -77,15 +115,15 @@ public class Societe {
 			return false;
 		return true;
 	}
-	
-	
-	
-	
-	
 
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
 }

@@ -1,6 +1,3 @@
-
-import java.util.Arrays;
-
 public class GestionEntrepot {
     //private static Scanner scanner = new Scanner(System.in);
     private static MonScanner scanner = new MonScanner("commandes.txt");
@@ -19,7 +16,11 @@ public class GestionEntrepot {
             System.out.println();
             System.out.println("1 -> attribuer un hangar");
             System.out.println("2 -> lister les hangars d'une societe");
-            System.out.println("3 -> quitter");
+            System.out.println("3 -> libérer un hangar");
+            System.out.println("4 -> ajouter un véhicule");
+            System.out.println("5 -> vérifier une plaque");
+            System.out.println("6 -> quitter");
+            System.out.println();
             System.out.println();
             System.out.print("Votre choix : ");
             choix = scanner.nextInt();
@@ -30,7 +31,16 @@ public class GestionEntrepot {
                 case 2:
                     listerLesHangars();
                     break;
+                case 3:
+                    libererHangar();
+                    break;
+                case 4:
+                    ajoutVehicule();
+                    break;
                 case 5:
+                    verifierPlaque();
+                    break;
+                case 6:
                     break;
             }
 
@@ -61,7 +71,40 @@ public class GestionEntrepot {
 
     private static void listerLesHangars() {
         //TODO
+        System.out.println("Entrez le numero de la societe :");
+        int numSociete = scanner.nextInt();
+        Societe s = entrepot.getSociete(numSociete);
+        if (s == null){
+            System.out.println("Cette société n'existe pas ");
+            return;
+        }
+        System.out.println("Société " + s.getNom() + " n°" + s.getNumeroSociete() + ", possède les hangars : " + s.lesHangars());
         //System.out.println("Vous devez completer la methode listerLesHangars()");
+
+    }
+    public static void libererHangar(){
+        System.out.println("Entrez le numéro de hangar que vous voulez libérer");
+        int numHangar = scanner.nextInt();
+        entrepot.libererHangar(numHangar);
+    }
+    private static void ajoutVehicule() {
+        System.out.print("Entrez le numéro de la société à laquelle vous voulez ajouter une plaque : ");
+        int numSociete = scanner.nextInt();
+        System.out.print("Entrez la plaque d'immatriculation que vous voulez ajouter à la société : ");
+        String plaque = scanner.next();
+        if (entrepot.ajouterPlaque(numSociete, plaque))
+            System.out.println("La plaque à été ajoutée à  la société n°" + numSociete);
+        else
+            System.out.println("La plaque n'as pas été ajoutée");
+    }
+
+    private static void verifierPlaque() {
+        System.out.print("Entrez la plaque d'immatriculation que vous voulez vérifier : ");
+        String plaque = scanner.next();
+        if (entrepot.estAutorisee(plaque))
+            System.out.println("La plaque est autorisé");
+        else
+            System.out.println("La plaque à été refusée");
 
     }
 
