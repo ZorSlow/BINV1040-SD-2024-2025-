@@ -86,11 +86,20 @@ public class ABRDEntiers {
 		// Cette methode peut etre ecrite de facon iterative
 		// Ou se trouve le plus petit entier dans l'arbre ?
 		// Reflechissez !
-		if (racine == null) throw new ArbreVideException();
+		/*if (racine == null) throw new ArbreVideException();
 		NoeudEntier courant = racine;
 		while (courant.gauche != null)// Tant qu'on peut aller à gauche
 			courant = courant.gauche;
 		return courant.entier; // Le nœud le plus à gauche est le min
+		 */
+		if (racine == null) //estVide()
+			throw new ArbreVideException("l'arbre est vide aucun min");
+		return min(racine);
+	}
+	private int min(NoeudEntier noeud){
+		if (noeud.gauche == null)
+			return noeud.entier;
+		return min(noeud.gauche);
 	}
 
 	/**
@@ -146,14 +155,42 @@ public class ABRDEntiers {
 	public boolean supprime(int entier) {
 		//TODO
 		// DEFI!!!!!!!!!!!!!!
-		return false;
+
+		if (racine == null) return false;
+		racine = supprime(racine, entier);
+		return true;
 
 	}
+		private NoeudEntier supprime(NoeudEntier noeud, int entier) {
+			if (noeud == null) return null;
 
-	/**
-	 * construit une table triee par ordre croissant contenant les entiers de l'ABR
-	 * @return la table construite
-	 */
+			if (entier < noeud.entier) {
+				noeud.gauche = supprime(noeud.gauche, entier);
+			} else if (entier > noeud.entier) {
+				noeud.droit = supprime(noeud.droit, entier);
+			} else {
+				// Cas 1 : pas d’enfant
+				if (noeud.gauche == null && noeud.droit == null) {
+					return null;
+				}
+				// Cas 2 : un seul enfant
+				if (noeud.gauche == null) return noeud.droit;
+				if (noeud.droit == null) return noeud.gauche;
+
+				// Cas 3 : deux enfants
+				int min = min(noeud.droit); // ou max(noeud.gauche)
+				noeud.entier = min;
+				noeud.droit = supprime(noeud.droit, min);
+			}
+
+			return noeud;
+		}
+
+
+		/**
+         * construit une table triee par ordre croissant contenant les entiers de l'ABR
+         * @return la table construite
+         */
 	public int[] toArray() {
 		//TODO
 		// DEFI !!!!!!!!!!!
