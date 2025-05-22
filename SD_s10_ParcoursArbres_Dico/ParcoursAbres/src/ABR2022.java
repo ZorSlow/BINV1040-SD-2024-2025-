@@ -18,27 +18,49 @@ public class ABR2022 implements Iterable<Integer> {
 	public int nombreNegatifsVI(){
 		//TODO
 		//CONTRAINTE : cette methode doit etre iterative
-		return 0;
+		int cpt = 0;
+		for (Integer entier : this)
+			if (entier <0)
+				cpt++;
+		return cpt;
 	}
 
 	public int nombreNegatifsVR(){
 		//TODO
 		//CONTRAINTE : cette methode doit etre recursive
-		return 0;
+		return nombreNegatifsVR(racine);
+	}
+	private int nombreNegatifsVR(NoeudEntier noeud){
+		if (noeud == null)
+			return 0;
+		if (noeud.entier < 0)
+			return 1 + nombreNegatifsVR(noeud.gauche)+nombreNegatifsVR(noeud.droit);
+		return  nombreNegatifsVR(noeud.gauche)+nombreNegatifsVR(noeud.droit);
 	}
 
 	public boolean tousPositifsVI() {
 		//TODO
 		//CONTRAINTE : cette methode doit etre iterative
 		//N'utilisez pas une methode nombrePositifs()!
-		return false;
+		for (Integer entier : this)
+			if (entier <0)
+				return false;
+		return true;
 	}
 
 	public boolean tousPositifsVR() {
 		//TODO
 		//CONTRAINTE : cette methode doit etre recursive
 		//N'utilisez pas une methode nombrePositifs()!
-		return false;
+
+		return tousPositifsVR(racine);
+	}
+	private boolean tousPositifsVR(NoeudEntier noeud) {
+		if (noeud == null)
+			return true;
+		if (noeud.entier <0)
+			return false;
+		return tousPositifsVR(noeud.gauche) && tousPositifsVR(noeud.droit);
 	}
 
 	@Override
