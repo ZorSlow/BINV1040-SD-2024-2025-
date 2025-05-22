@@ -13,6 +13,11 @@ public class DocumentsLRU {
 			throw new IllegalArgumentException();
 		}
 		// TODO
+		listeLRU = new ListeLRU<>();
+		int numDoc=5;
+		for (int i = 1; i <= nombreDocuments; i++) {
+			listeLRU.insererEnTete("doc"+numDoc--);
+		}
 
 	}
 
@@ -22,11 +27,16 @@ public class DocumentsLRU {
 	 * @param document le document a ouvrir
 	 * @throws IllegalArgumentException si le document est null ou ""
 	 */
-	public void ouvrirDocument(String document){
-		if(document == null || document.equals(""))
+	public void ouvrirDocument(String document) {
+		if (document == null || document.equals(""))
 			throw new IllegalArgumentException();
 		//TODO
 
+		if (!listeLRU.contient(document)) {
+			listeLRU.insererEnTete(document);
+			listeLRU.supprimerDernier();
+		}
+		listeLRU.insererEnTete(document);
 	}
 	
 	

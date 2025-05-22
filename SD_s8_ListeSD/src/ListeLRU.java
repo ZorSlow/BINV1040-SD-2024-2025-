@@ -31,7 +31,7 @@ public class ListeLRU<E> {
 	 */
 	public boolean contient (E element) {
 		//TODO
-		return false;
+		return mapElementNoeud.containsKey(element);
 	}
 
 	/**
@@ -41,7 +41,20 @@ public class ListeLRU<E> {
 	 */
 	public boolean insererEnTete (E element){
 		//TODO
-		return false;
+		if (mapElementNoeud.containsKey(element))return false;
+
+		Noeud nouveauNoeud = new Noeud(element);
+
+			Noeud noeudAvant = tete;
+			Noeud noeudApres = tete.suivant;
+
+			nouveauNoeud.precedent = noeudAvant;
+			nouveauNoeud.suivant = noeudApres;
+			noeudAvant.suivant = nouveauNoeud;
+			noeudApres.precedent = nouveauNoeud;
+
+			mapElementNoeud.put(element, nouveauNoeud);
+			return true;
 	}
 
 	/**
@@ -51,7 +64,16 @@ public class ListeLRU<E> {
 	 */
 	public boolean supprimer (E element) {
 		//TODO
-		return false;
+		if (!mapElementNoeud.containsKey(element))return false;
+
+		Noeud noeudAvant = mapElementNoeud.get(element).precedent;
+		Noeud noeudApres = noeudAvant.suivant.suivant;
+
+		noeudAvant.suivant = noeudApres;
+		noeudApres.precedent = noeudAvant;
+
+		mapElementNoeud.remove(element);
+		return true;
 	}
 
 	/**
@@ -60,7 +82,15 @@ public class ListeLRU<E> {
 	 */
 	public E supprimerDernier() {
 		//TODO
-		return null;
+		if (queue.precedent == tete)return null;
+		Noeud noeudAvant = queue.precedent.precedent;
+		Noeud noeudApres = queue;
+
+		Noeud neoudS = mapElementNoeud.remove(queue.precedent.element);
+		noeudAvant.suivant = noeudApres;
+		noeudApres.precedent = noeudAvant;
+
+		return neoudS.element;
 	}
 
 

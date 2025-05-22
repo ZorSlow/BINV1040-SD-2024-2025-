@@ -25,7 +25,6 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 	public boolean estVide () {
 		//TODO
 		return mapElementNoeud.isEmpty();
-	
 	}
 
 	public boolean contient (E element) {
@@ -72,27 +71,20 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 		//TODO
 
 		// Verifier si l'élement est déjà présent
-		if (mapElementNoeud.containsKey(element)) {
+		// on refuse les doublons
+		if (mapElementNoeud.containsKey(element))
 			return false;
-		}
 		Noeud nouveauNoeud = new Noeud(element);
-		// Cas où la liste est vide (seulement les sentinelles )
-		if (tete.suivant == queue) {
-			nouveauNoeud.precedent = tete;
-			nouveauNoeud.suivant = queue;
-			tete.suivant = nouveauNoeud;
-			queue.precedent = nouveauNoeud;
-		}else {
-			// Cas général : insertion en tête
-			Noeud ancienneTete = tete.suivant;
-			nouveauNoeud.precedent = tete;
-			nouveauNoeud.suivant = ancienneTete;
-			ancienneTete.precedent = nouveauNoeud;
-			tete.suivant = nouveauNoeud;
-
-		}
+		// selections des noeuds qui se vont se trouver avant et apres ce nouveau noeud
+		Noeud noeudAvant = tete;
+		Noeud noeudApres = tete.suivant;
+		// on fait les 4 raccords
+		nouveauNoeud.precedent = noeudAvant;
+		nouveauNoeud.suivant = noeudApres;
+		noeudAvant.suivant = nouveauNoeud;
+		noeudApres.precedent = nouveauNoeud;
+		// ne pas oublier de mettre cet element et le noeud qui le contient dans le map
 		mapElementNoeud.put(element,nouveauNoeud);
-
 		return true;
 
 }
@@ -105,23 +97,15 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 
 		Noeud nouveauNoeud = new Noeud(element);
 
-		// Cas où la liste est vide (seulement les sentinelles)
-		if (queue.precedent == tete) {
-			nouveauNoeud.suivant = queue;
-			nouveauNoeud.precedent = tete;
-			tete.suivant = nouveauNoeud;
-			queue.precedent = nouveauNoeud;
-		} else {
-			// Cas général : insertion en queue
-			Noeud ancienneQueue = queue.precedent;
-			nouveauNoeud.suivant = queue;
-			nouveauNoeud.precedent = ancienneQueue;
-			ancienneQueue.suivant = nouveauNoeud; // Lien manquant
-			queue.precedent = nouveauNoeud;       // Mise à jour de la sentinelle
-		}
+		Noeud noeudAvant = queue.precedent;
+		Noeud noeudApres = queue;
+
+		nouveauNoeud.precedent = noeudAvant;
+		nouveauNoeud.suivant = noeudApres;
+		noeudAvant.suivant = nouveauNoeud;
+		noeudApres.precedent = nouveauNoeud;
 
 		mapElementNoeud.put(element, nouveauNoeud);
-
 		return true;
 	}
 
@@ -156,8 +140,7 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 		//TODO
 
 		// 1. Vérifications renforcées (sentinelles incluses)
-		if (!mapElementNoeud.containsKey(element) || mapElementNoeud.containsKey(elementAInserer)
-				|| element == tete || element == queue) {
+		if (!mapElementNoeud.containsKey(element) || mapElementNoeud.containsKey(elementAInserer)){
 			return false;
 		}
 
@@ -165,15 +148,15 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 		Noeud nouveauNoeud = new Noeud(elementAInserer);
 
 		// 3. Recupérer les références
-		Noeud noeudCible = mapElementNoeud.get(element);
-		Noeud noeudAvant = noeudCible.precedent;
+		Noeud noeudApres = mapElementNoeud.get(element);
+		Noeud noeudAvant = noeudApres.precedent;
 
 		// 4. Mettre à jour les liens
 		nouveauNoeud.precedent = noeudAvant;
-		nouveauNoeud.suivant = noeudCible;
+		nouveauNoeud.suivant = noeudApres;
 
 		noeudAvant.suivant = nouveauNoeud;
-		noeudCible.precedent = nouveauNoeud;
+		noeudApres.precedent = nouveauNoeud;
 		// 5. Ajouter à la Map
 		mapElementNoeud.put(elementAInserer, nouveauNoeud);
 
@@ -185,28 +168,17 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 	public boolean supprimer (E element) {
 		//TODO
 
-		// 1. Vérifier si l'élément existe dans la Map
-		if(!mapElementNoeud.containsKey(element)) {
+		Noeud noeud = mapElementNoeud.get(element);
+		if(noeud==null)
 			return false;
-		}
 
-		// 2. Récupérer le nœud à supprimer
-		Noeud noeudASupp = mapElementNoeud.get(element);
-
-		// 3. Vérifier que ce n'est pas une sentinelle (sécurité renforcée)
-		if (noeudASupp == tete || noeudASupp == queue) {
-			return false;
-		}
-		// 4. Mettre à jour les liens des nœuds adjacents
-		Noeud noeudAvant = noeudASupp.precedent;
-		Noeud noeudApres = noeudASupp.suivant;
+		Noeud noeudAvant = noeud.precedent;
+		Noeud noeudApres = noeud.suivant;
 
 		noeudAvant.suivant = noeudApres;
 		noeudApres.precedent = noeudAvant;
 
-		// 5. Retirer l'élément de la Map
 		mapElementNoeud.remove(element);
-
 		return true;
 
 	}
@@ -234,8 +206,8 @@ public class ListeSDImpl<E> implements ListeSD<E>,Iterable<E> {
 		noeud2.element = temp;
 
 		// Mettre à jour la Map pour refléter les nouvelles clés
-		mapElementNoeud.remove(element1); // Retirer l'ancienne clé elem1
-		mapElementNoeud.remove(element2);
+		//mapElementNoeud.remove(element1); // Retirer l'ancienne clé elem1
+		//mapElementNoeud.remove(element2); car put ecrase l'ancienne
 		mapElementNoeud.put(noeud1.element,noeud1);// Nouvelle clé : valeur de noeud1
 		mapElementNoeud.put(noeud2.element,noeud2);
 
