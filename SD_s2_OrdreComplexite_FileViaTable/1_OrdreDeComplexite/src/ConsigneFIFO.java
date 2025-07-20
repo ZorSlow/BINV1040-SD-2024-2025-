@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.ArrayDeque;
 
 
 public class ConsigneFIFO {
 
-    private ArrayList<Casier> casiersLibres;
+    private ArrayDeque<Casier> casiersLibres;
     private Casier[] tousLesCasiers;
 
     /**
@@ -13,15 +14,14 @@ public class ConsigneFIFO {
      */
     public ConsigneFIFO(int nombreCasiers){
         // TODO
-        if (nombreCasiers <=0 )throw new IllegalArgumentException();
-        casiersLibres = new ArrayList<>();
+        if (nombreCasiers <=0 ) throw new IllegalArgumentException();
+        casiersLibres = new ArrayDeque<Casier>();
         tousLesCasiers = new Casier[nombreCasiers];
         for (int i = 0; i < nombreCasiers; i++) {
             Casier casier = new Casier(i);
             casiersLibres.add(casier);
-            tousLesCasiers[i] = casier;
+            tousLesCasiers[i]= casier;
         }
-
     }
 
     /**
@@ -42,10 +42,10 @@ public class ConsigneFIFO {
      */
     public int attribuerCasierLibre(String motDePasse) {
         // TODO
-        if (motDePasse == null || motDePasse.isEmpty())throw new IllegalArgumentException();
+        if (motDePasse == null || motDePasse.equals(""))throw new IllegalArgumentException();
         if (casiersLibres.isEmpty())
             return -1;
-        Casier casier = casiersLibres.remove(0);
+        Casier casier = casiersLibres.pollFirst();
         casier.setMotDePasse(motDePasse);
         return casier.getNumero();
 
@@ -62,15 +62,14 @@ public class ConsigneFIFO {
      */
     public boolean libererCasier(int numeroCasier, String motDePasse) {
         // TODO
-        if (numeroCasier < 0 ||  numeroCasier >= tousLesCasiers.length)throw new IllegalArgumentException();
-        if (motDePasse == null || motDePasse.isEmpty())throw new IllegalArgumentException();
+        if (numeroCasier <0 || numeroCasier >= tousLesCasiers.length)throw new IllegalArgumentException();
+        if (motDePasse == null || motDePasse.equals(""))throw new IllegalArgumentException();
         Casier casier = tousLesCasiers[numeroCasier];
-        if (casier.getMotDePasse().equals(motDePasse)) {
-            casier.setMotDePasse(" ");
-            casiersLibres.add(casier);
-            return true;
-        }
-        return false;
+        if (!casier.getMotDePasse().equals(motDePasse))
+            return false;
+        casier.setMotDePasse("");
+        casiersLibres.addLast(casier);
+        return true;
 
     }
 }
