@@ -29,6 +29,7 @@ public class DequeImplChaineeAS<E> implements Deque<E>{
 
     public E dernier() throws DequeVideException {
         //TODO
+        if (estVide())throw new DequeVideException();
         return queueS.precedent.element;
     }
 
@@ -48,27 +49,31 @@ public class DequeImplChaineeAS<E> implements Deque<E>{
         E element = dernier.element;
         queueS.precedent = dernier.precedent;
         dernier.precedent.suivant = queueS;
-     >>>>>>>   taille--;
+        taille--;
         return element;
     }
 
     public void ajouterEnPremier(E element) {
         //TODO
-        Noeud nouveauNoed = new Noeud(element);
-        nouveauNoed.suivant = teteS.suivant;
-        nouveauNoed.precedent = teteS;
-        teteS.suivant.precedent =nouveauNoed;
-        teteS.suivant = nouveauNoed;
+        Noeud nouveauNoeud = new Noeud(element);
+        Noeud noeudApres = teteS.suivant;
+        nouveauNoeud.suivant  = noeudApres;
+        nouveauNoeud.precedent = teteS;
+        noeudApres.precedent = nouveauNoeud;
+        teteS.suivant = nouveauNoeud;
         taille++;
     }
 
     public void ajouterEnDernier(E element) {
+        //TODO
         Noeud nouveauNoeud = new Noeud(element);
-        nouveauNoeud.precedent = queueS.precedent;
+        Noeud noeuAvant = queueS.precedent;
         nouveauNoeud.suivant = queueS;
-        queueS.precedent.suivant = nouveauNoeud;
+        nouveauNoeud.precedent = noeuAvant;
+        noeuAvant.suivant = nouveauNoeud;
         queueS.precedent = nouveauNoeud;
         taille++;
+
     }
 
     // A NE PAS MODIFIER --> POUR LES TESTS!!!
