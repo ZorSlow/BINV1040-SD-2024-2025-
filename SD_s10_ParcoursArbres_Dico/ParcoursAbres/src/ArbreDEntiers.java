@@ -35,7 +35,7 @@ public class ArbreDEntiers implements Iterable<Integer>{
 	
 	public Iterator<Integer> postIterateur () {
 		return null;
-		//Cet iterateur s’implemente de facon similaire a l’iterateur en pre-ordre.
+		//Cet iterateur s?implemente de facon similaire a l?iterateur en pre-ordre.
 		//TODO
 	}
 
@@ -43,7 +43,7 @@ public class ArbreDEntiers implements Iterable<Integer>{
 	// Cet iterateur a ete selectionne comme iterateur par defaut
 	public Iterator<Integer> iterator () {
 		return null;
-		//Cet iterateur s’implemente de facon similaire a l’iterateur en pre-ordre.
+		//Cet iterateur s?implemente de facon similaire a l?iterateur en pre-ordre.
 		//TODO
 	}
 	
@@ -80,17 +80,17 @@ public class ArbreDEntiers implements Iterable<Integer>{
 		public PreIterateur () {
 			fileDEntiers = new ArrayDeque<Integer>(taille);
 			remplirFile(racine);
-			//La classe PreIterator possede un attribut : une file d’entiers (ArrayDeque<Integer>).
-			//Le constructeur de la classe va s’occuper de remplir cette file avec tous les entiers contenus dans l’arbre.
+			//La classe PreIterator possede un attribut : une file d?entiers (ArrayDeque<Integer>).
+			//Le constructeur de la classe va s?occuper de remplir cette file avec tous les entiers contenus dans l?arbre.
 			//Il construit la file et appelle la methode recursive remplirFile()
 		}
 		
 		private void remplirFile (NoeudEntier n) {
 			// TODO
-			//C’est la methode remplirFile() qui se charge de remplir la file.
-			//Il s’agit d’une methode recursive !
-			//Le but de cet iterateur est de parcourir l’arbre en pre-ordre !
-			//Il faut donc « enfiler » les objets dans la file de facon a respecter ce parcours.
+			//C?est la methode remplirFile() qui se charge de remplir la file.
+			//Il s?agit d?une methode recursive !
+			//Le but de cet iterateur est de parcourir l?arbre en pre-ordre !
+			//Il faut donc ? enfiler ? les objets dans la file de facon a respecter ce parcours.
 		}
 
 		public boolean hasNext () {
