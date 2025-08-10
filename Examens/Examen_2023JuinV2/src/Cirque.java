@@ -24,6 +24,21 @@ public class Cirque {
 		// pour verifier la presence de doublons dans la table des prenoms :
 		// verifier si les ajouts dans le map se font bien
 		// Dans un map, chaque cle est unique !
+		if (nombreTotalPlaces <= 0) throw new IllegalArgumentException("au moins une place");
+		if (tablePrenoms == null || tablePrenoms.length == 0)
+			throw new IllegalArgumentException("table des prénoms null ou vide");
+
+		this.tableReservations = new String[nombreTotalPlaces];
+		this.mapEnfants = new HashMap<>();
+
+		// vérifier prénoms (null/vides/doublons) et remplir le map
+		for (String prenom : tablePrenoms) {
+			if (prenom == null || prenom.isEmpty())
+				throw new IllegalArgumentException("prenom null ou vide");
+			if (mapEnfants.containsKey(prenom))
+				throw new IllegalArgumentException("doublon prénom : " + prenom);
+			mapEnfants.put(prenom, new HashSet<Integer>());
+		}
 
 	}
 
@@ -42,7 +57,34 @@ public class Cirque {
 	 */
 	public boolean reserver(String prenom, HashSet<Integer> ensemblePlacesDemandees){
 		// TODO
-		return false;
+
+		if (prenom == null || prenom.isEmpty())
+			throw new IllegalArgumentException("prenom invalide");
+		if (!mapEnfants.containsKey(prenom))
+			throw new IllegalArgumentException("enfant inconnu du village");
+		if (ensemblePlacesDemandees == null || ensemblePlacesDemandees.isEmpty())
+			throw new IllegalArgumentException("ensemble null ou vide");
+
+		// vérifier existence des places
+		for (Integer place : ensemblePlacesDemandees) {
+			if (place == null || place < 0 || place >= tableReservations.length)
+				throw new IllegalArgumentException("place inexistante : " + place);
+		}
+
+		// vérifier que TOUTES les places sont libres (sinon, on ne réserve rien)
+		for (Integer place : ensemblePlacesDemandees) {
+			if (tableReservations[place] != null) {
+				return false; // au moins une occupée → échec global
+			}
+		}
+
+		// tout est libre → on réserve
+		HashSet<Integer> deja = mapEnfants.get(prenom);
+		for (Integer place : ensemblePlacesDemandees) {
+			tableReservations[place] = prenom;
+			deja.add(place);
+		}
+		return true;
 
 	}
 
@@ -58,8 +100,21 @@ public class Cirque {
 	 */
 	public int[] placesReservees (String prenom) {
 		//TODO
-		return null;
+
 		// Pour trier la table, utilisez la methode static sort() de la classe Arrays
+		if (prenom == null || prenom.isEmpty())
+			throw new IllegalArgumentException("prenom invalide");
+		if (!mapEnfants.containsKey(prenom))
+			throw new IllegalArgumentException("enfant inconnu du village");
+
+		HashSet<Integer> set = mapEnfants.get(prenom);
+		if (set.isEmpty()) return new int[0];
+
+		int[] res = new int[set.size()];
+		int i = 0;
+		for (int p : set) res[i++] = p;
+		Arrays.sort(res);
+		return res;
 
 	}
 

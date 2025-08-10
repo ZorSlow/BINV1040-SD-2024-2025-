@@ -5,8 +5,8 @@ import java.util.Scanner;
 
 public class GestionCirque {
 	
-	private static Scanner scanner = new Scanner(System.in);
-	//private static MonScanner scanner = new MonScanner("inputCirque.txt");
+	//private static Scanner scanner = new Scanner(System.in);
+	private static MonScanner scanner = new MonScanner("inputCirque.txt");
 
 	private static Cirque cirque;
 

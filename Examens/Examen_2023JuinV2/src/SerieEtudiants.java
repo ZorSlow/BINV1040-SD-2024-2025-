@@ -13,7 +13,12 @@ public class SerieEtudiants {
         if(delegue==null||delegue.length()==0)
             throw new IllegalArgumentException();
         //TODO
-
+        mapEtudiantNoeud = new HashMap<>();
+        tete = new Noeud(delegue);
+        tete.precedent = null;
+        tete.suivant = null;
+        queue = tete;
+        mapEtudiantNoeud.put(delegue, tete);
     }
 
     /**
@@ -26,7 +31,30 @@ public class SerieEtudiants {
         if(nouvelEtudiant==null||nouvelEtudiant.length()==0)
             throw new IllegalArgumentException();
         //TODO
-        return false;
+        // Si déjà présent dans la liste → rien à faire
+        if (mapEtudiantNoeud.containsKey(nouvelEtudiant))
+            return false;
+
+        Noeud nouveauNoeud = new Noeud(nouvelEtudiant);
+
+        // Cas 1 : le délégué est le seul étudiant (liste avec un seul élément)
+        if (tete == queue) {
+            nouveauNoeud.precedent = tete;
+            tete.suivant = nouveauNoeud;
+            queue = nouveauNoeud;
+        }
+        // Cas 2 : il y a déjà d'autres étudiants
+        else {
+            Noeud noeudApresDelegue = tete.suivant;
+            nouveauNoeud.precedent = tete;
+            nouveauNoeud.suivant = noeudApresDelegue;
+            tete.suivant = nouveauNoeud;
+            noeudApresDelegue.precedent = nouveauNoeud;
+        }
+
+        // Enregistrer dans la map pour accès O(1)
+        mapEtudiantNoeud.put(nouvelEtudiant, nouveauNoeud);
+        return true;
     }
 
     /**
@@ -39,7 +67,29 @@ public class SerieEtudiants {
         if(etudiant==null||etudiant.length()==0)
             throw new IllegalArgumentException();
         //TODO
-        return false;
+        if (etudiant == null || etudiant.isEmpty())
+            throw new IllegalArgumentException();
+
+        Noeud noeudDebutSuppression = mapEtudiantNoeud.get(etudiant);
+        if (noeudDebutSuppression == null) return false;       // pas dans la liste
+        if (noeudDebutSuppression == tete) return false;       // ne pas tronquer le délégué
+
+        // Retirer du map tous les étudiants à partir de noeudDebutSuppression
+        Noeud courant = noeudDebutSuppression;
+        while (courant != null) {
+            mapEtudiantNoeud.remove(courant.etudiant);
+            courant = courant.suivant;
+        }
+
+        // Détacher : l'élément juste avant devient la nouvelle queue
+        Noeud noeudAvantSuppression = noeudDebutSuppression.precedent;
+        noeudAvantSuppression.suivant = null;
+        queue = noeudAvantSuppression;
+
+        // Optionnel pour libérer la mémoire
+        noeudDebutSuppression.precedent = null;
+
+        return true;
     }
 
     /**
