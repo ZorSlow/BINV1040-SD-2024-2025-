@@ -45,6 +45,8 @@ public class FileDePrioriteImpl<E> implements FileDePriorite<E>{
 		return max(racine);
 	}
 	private E max(Noeud noeud){
+		if (noeud == null)
+			return null;
 		if (noeud.gauche == null)
 			return noeud.element;
 		return max(noeud.gauche);
