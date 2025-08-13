@@ -123,9 +123,7 @@ public class Concours {
             Candidat[] classement = Arrays.copyOf(tableCandidats, tableCandidats.length);
 
             // tri décroissant sur le nombre de votes, en une seule ligne
-            Arrays.sort(classement,
-                    (c1, c2) -> Integer.compare(c2.getNombreVotes(), c1.getNombreVotes())
-            );
+        Arrays.sort(classement, new ComparateurCandidats());
 
             return classement;
 
