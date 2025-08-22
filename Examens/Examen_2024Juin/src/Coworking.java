@@ -17,12 +17,17 @@ public class Coworking {
 	 * @throws IllegalArgumentException : il faut au moins un bureau et une societe
 	 */
 	public Coworking(int nombreBureaux, String[] tableSocietes){
-		if (nombreBureaux < 1 || tableSocietes.length <1 )throw new IllegalArgumentException();
 		//TODO
-		tableBureaux = new  String[nombreBureaux];
+		if (nombreBureaux <= 0 || tableSocietes == null || tableSocietes.length == 0)
+			throw new IllegalArgumentException("Paramètres invalides");
+
+		tableBureaux = new String[nombreBureaux];
 		mapSocietes = new HashMap<>();
-		for (int i = 0; i < tableSocietes.length; i++) {
-			mapSocietes.put(tableSocietes[i],new HashSet<>());
+
+		for (String s : tableSocietes) {
+			if (s == null || s.isEmpty())
+				throw new IllegalArgumentException("Nom de société invalide");
+			mapSocietes.put(s, new HashSet<>()); // les doublons se recouvrent, OK
 		}
 
 	}
