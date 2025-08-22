@@ -39,14 +39,12 @@ public class ABRPrenoms implements Iterable<String> {
         return nombreOccurrences(racine,prenom);
 
     } private int nombreOccurrences(Noeud noeud,String prenom) {
-        int nombreOccurence = 0;
-        if (noeud == null)
-            return 0;
-        if (noeud.prenom.equals(prenom)) {
-            nombreOccurence += noeud.nombreOccurrences;
-            return nombreOccurence + nombreOccurrences(noeud.gauche, prenom) + nombreOccurrences(noeud.droit, prenom);
-        }
-        return nombreOccurrences(noeud.gauche,prenom) + nombreOccurrences(noeud.droit, prenom);
+            if (noeud == null) return 0;
+
+            int cmp = noeud.prenom.compareTo(prenom);
+            if (cmp == 0) return noeud.nombreOccurrences;      // trouvé
+            if (cmp > 0)  return nombreOccurrences(noeud.gauche, prenom); // va à gauche
+            return nombreOccurrences(noeud.droit, prenom);                 // va à droite
     }
 
 
@@ -93,12 +91,17 @@ public class ABRPrenoms implements Iterable<String> {
         private void remplirFile(Noeud noeud) {
             //TODO
             //Suivez bien les indications de l'enonce
+            if (noeud == null)
+                return;
+            // Parcours infixe pour obtenir l'ordre alphabétique
             remplirFile(noeud.gauche);
-            for (String prenom : this.filePrenoms)
-                if (prenom.compareTo(noeud.gauche.prenom) < 0 )
-                    filePrenoms.add(prenom);
-            remplirFile(noeud.droit);
 
+            // Ajouter le prénom autant de fois que d'occurrences
+            for (int k = 0; k < noeud.nombreOccurrences; k++) {
+                filePrenoms.addLast(noeud.prenom);
+            }
+
+            remplirFile(noeud.droit);
 
         }
 
